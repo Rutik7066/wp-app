@@ -14,10 +14,13 @@ export const loader = async ({pb}:{pb:Client}) => {
 
 export const Layout = () => {
   const nav = useNavigate();
-  // TODO: fix this redirect everytime to home issue
+
   useEffect(() => {
-    return nav('/home');
+    if(window.location.pathname === "/"){
+      nav('/home');
+    }
   }, [])
+
   return (
     <div className=" flex flex-col w-screen min-w-full min-h-screen max-h-screen bg-primary  p-0 m-0">
       {/* App Bar */}

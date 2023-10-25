@@ -135,7 +135,7 @@ const Campaign = () => {
       <Toast message={stateMessage} state={state} />
       <div className="flex flex-col justify-start items-start w-full py-3">
         <h1 className="text-white m-1">जाहिरातीचे नाव</h1>
-        <input name="title" type="text" required onChange={(e) => setTitle(e.target.value)} placeholder="जाहिरातीचे नाव टाका" className="text-white bg-secondary rounded-md border border-secondary h-10 p-2 w-full" />
+        <input name="title" type="text" required onChange={(e) => setTitle(e.target.value)} placeholder="जाहिरातीचे नाव टाका" className="text-white bg-secondary rounded-md border border-secondary p-3 w-full" />
       </div>
       <div className="flex flex-col justify-start items-start w-full pb-3 ">
         <h1 className="text-white m-1">मॅसेज</h1>

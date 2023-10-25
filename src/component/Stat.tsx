@@ -14,7 +14,6 @@ const Stat = () => {
     const data:any = useRouteLoaderData("root");
     console.log(data)
 
-    //TODO:fecth data of user every time so that it will get fresh data
     return (
         <div className="grid grid-cols-2 grid-rows-2 w-full p-2 gap-2">
             <StatCard icon={<CreditIcon />} title={"उपलब्ध क्रेडिट"} value={data.credit } />

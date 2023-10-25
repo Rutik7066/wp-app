@@ -14,8 +14,7 @@ import { PocketbaseProvider } from './context/PocketbaseProvider'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <PocketbaseProvider>
-
-    <App/>
+      <App />
     </PocketbaseProvider>
   </React.StrictMode>,
 )

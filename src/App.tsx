@@ -58,6 +58,11 @@ export const App = () => {
           errorElement: <Error />
         },
         {
+          path: "/contact/:index",
+          element: <Contact />,
+          errorElement: <Error />
+        },
+        {
           path: "/profile",
           element: <Profile />,
           errorElement: <Error />
