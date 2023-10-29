@@ -21,7 +21,11 @@ const Campaign = () => {
 
   const [message, setMessage] = useState('');
 
-  const [FileSrc, setFileSrc] = useState('');
+  const [FilePreview, setFilePreview] = useState(''); // To preview
+
+  const [file, setFile] = useState<File>(); // To upload
+
+
   const [campType, setcampType] = useState('text'); // New state variable for file type
 
 
@@ -37,31 +41,36 @@ const Campaign = () => {
   useEffect(() => {
     const src = searchParams.get("src");
     if (src) {
-      name = searchParams.get("src").split(".")[0];
-      setFileSrc(`https://robo.itraindia.org/server/images/${src}`)
+      const imageUrl = `https://robo.itraindia.org/server/images/${src}`;
+      name = searchParams.get("src").split("?")[0];
+      setFilePreview(imageUrl)
+      fetch(imageUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            // Convert the Blob to a File by creating a new File instance
+            const file = new File([blob], name, { type: blob.type });
+            // You can now use 'file' as a File object
+            console.log('File created:', file);
+        })
+        .catch(error => {
+            console.error('Error fetching image:', error);
+        });
       if(src.includes("jpg") || src.includes("png")){
         setcampType("image")
       }
     }
   }, [])
-  const dataURItoBlob = (dataURI: string) => {
-    const byteString = atob(dataURI.split(',')[1]);
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([ab], { type: mimeString });
-  };
-
 
  
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFile = e.target.files[0];
+      setFile(selectedFile);
       if (selectedFile) {
         if (
           (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png' || selectedFile.type === 'video/mp4') &&
@@ -70,14 +79,14 @@ const Campaign = () => {
        
           const reader = new FileReader();
           reader.onload = (event) => {
-            setFileSrc(event.target.result as string);
+            setFilePreview(event.target.result as string);
             setcampType(selectedFile.type.split("/")[0]); // Set the file type
           };
           reader.readAsDataURL(selectedFile);
         } else {
           setState(3)
           setStateMessage('Please select a JPG, PNG, or Video less than 5 MB.');
-          setFileSrc(''); // Clear the image source
+          setFilePreview(''); // Clear the image source
           setTimeout(() => {
             setMessage("")
             setState(4)
@@ -93,7 +102,6 @@ const Campaign = () => {
     
     setState(0)
     try {
-      const formData = new FormData();
       const data = {
         "user": user.id,
         "title": title,
@@ -104,15 +112,10 @@ const Campaign = () => {
         "succefull_contact": 0,
         "failed_contact": 0,
         "to": JSON.stringify([]),
-        "text": message
+        "text": message,
+        'attachment': file
       };
-      for (const ele in data) {
-        console.debug(ele, data[ele]);
-        formData.append(ele, data[ele] as string | Blob);
-      }
-      if (campType === "image" || campType === "video") {
-        formData.append('attachment', dataURItoBlob(FileSrc));
-      }
+
       const record = await pb.collection('campaign').create(data);
       user.campaign = [...user.campaign, record.id];
     await pb.collection("users").update(user.id,user)
@@ -151,9 +154,9 @@ const Campaign = () => {
 
       </div>
       {
-        FileSrc ? (
+        FilePreview ? (
           <div className="flex flex-row justify-center items-center p-3  w-full h-32 rounded-md bg-active/5  outline-2   outline-dotted outline-active ">
-            <img src={FileSrc} className="rounded-md h-full" />
+            <img src={FilePreview} className="rounded-md h-full" />
             <div className=" flex flex-col ml-2 p-0  w-full h-full justify-between items-center">
               <h1 className=" text-white text-lg my-3">{name}</h1>
               <div className="flex justify-between items-center w-full  gap-x-2">
@@ -166,7 +169,7 @@ const Campaign = () => {
                   />
                   फोटो बदला
                 </button>
-                <button onClick={() => setFileSrc("")} className="bg-active text-white p-2 rounded-md  w-full">
+                <button onClick={() => setFilePreview("")} className="bg-active text-white p-2 rounded-md  w-full">
                   फोटो काढा
                 </button>
               </div>
