@@ -22,9 +22,10 @@ const Campaign = () => {
   const [message, setMessage] = useState('');
 
   const [FileSrc, setFileSrc] = useState('');
-
-
   const [campType, setcampType] = useState('text'); // New state variable for file type
+  let file:File; 
+
+
 
   const [state, setState] = useState(4);
 
@@ -42,18 +43,7 @@ const Campaign = () => {
   }, [])
 
 
-  const dataURItoBlob = (dataURI: string) => {
-    const byteString = atob(dataURI.split(',')[1]);
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([ab], { type: mimeString });
-  };
+ 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFile = e.target.files[0];
@@ -62,10 +52,11 @@ const Campaign = () => {
           (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png' || selectedFile.type === 'video/mp4') &&
           selectedFile.size <= 5 * 1024 * 1024
         ) {
+          file = selectedFile;
+          setcampType(selectedFile.type.split("/")[0]); // Set the file type
           const reader = new FileReader();
           reader.onload = (event) => {
             setFileSrc(event.target.result as string);
-            setcampType(selectedFile.type.split("/")[0]); // Set the file type
           };
           reader.readAsDataURL(selectedFile);
         } else {
@@ -103,7 +94,7 @@ const Campaign = () => {
         formData.append(ele, data[ele] as string | Blob);
       }
       if (campType === "image" || campType === "video") {
-        formData.append('attachment', dataURItoBlob(FileSrc));
+        formData.append('attachment', file);
       }
       const record = await pb.collection('campaign').create(data);
       user.campaign = [...user.campaign, record.id];

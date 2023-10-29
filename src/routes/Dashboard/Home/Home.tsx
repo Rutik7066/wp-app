@@ -8,8 +8,7 @@ import { NavLink, useRouteLoaderData } from "react-router-dom"
 const Home = () => {
 
   // TODO: contact page add remove update delete  
-  // TODO: contact page add remove update delete  
-  // TODO: pwa & deploy
+
 
 
 
