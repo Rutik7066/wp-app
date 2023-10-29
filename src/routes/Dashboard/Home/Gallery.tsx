@@ -17,6 +17,7 @@ export const loader = async ({ params }) => {
 export const Gallery = () => {
 
   const data:any= useLoaderData()
+console.log(data);
 
   return (
     <div className="grid grid-cols-3 ">

@@ -39,6 +39,9 @@ const Campaign = () => {
     if (src) {
       name = searchParams.get("src").split(".")[0];
       setFileSrc(`https://robo.itraindia.org/server/images/${src}`)
+      if(src.includes("jpg") || src.includes("png")){
+        setcampType("image")
+      }
     }
   }, [])
 
@@ -49,8 +52,8 @@ const Campaign = () => {
       const selectedFile = e.target.files[0];
       if (selectedFile) {
         if (
-          (selectedFile.type === 'image/jpg' || selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png' || selectedFile.type === 'video/mp4') &&
-          selectedFile.size <= 25 * 1024 * 1024
+          (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png' || selectedFile.type === 'video/mp4') &&
+          selectedFile.size <= 5 * 1024 * 1024
         ) {
           file = selectedFile;
           setcampType(selectedFile.type.split("/")[0]); // Set the file type
@@ -61,7 +64,7 @@ const Campaign = () => {
           reader.readAsDataURL(selectedFile);
         } else {
           setState(3)
-          setStateMessage('Please select a JPG, PNG, or Video less than 25 MB.');
+          setStateMessage('Please select a JPG, PNG, or Video less than 5 MB.');
           setFileSrc(''); // Clear the image source
           setTimeout(() => {
             setMessage("")
@@ -74,51 +77,53 @@ const Campaign = () => {
   }
 
   const handleSubmit = async () => {
-    setState(0)
-    try {
-      const formData = new FormData();
-      const data = {
-        "user": user.id,
-        "title": title,
-        "sheduled_at": new Date().toUTCString(),
-        "status": "Not Started",
-        "attactment_type": campType,
-        "selected_contact": user.contacts.length,
-        "succefull_contact": 0,
-        "failed_contact": 0,
-        "to": JSON.stringify([]),
-        "text": message
-      };
-      for (const ele in data) {
-        console.debug(ele, data[ele]);
-        formData.append(ele, data[ele] as string | Blob);
-      }
-      if (campType === "image" || campType === "video") {
-        formData.append('attachment', file);
-      }
-      const record = await pb.collection('campaign').create(data);
-      user.campaign = [...user.campaign, record.id];
-    await pb.collection("users").update(user.id,user)
-      console.debug(record.id)
-      const req = await fetch(`https://disgusting-trouble-production.up.railway.app/start?id=${record.id}&type=${campType}`)
-      const res = await req.text();
-      console.log(JSON.stringify(res, null, 2));
-      console.log(req.status);
-      setStateMessage(req.status == 200 ? "Campaign started" : "Failed to start campaign.")
-      setState(req.status == 200 ? 1 : 2)
-      setTimeout(() => {
-        setMessage("")
-        setState(4)
-      }, 2000);
-    } catch (error) {
-      console.error(JSON.stringify(error, null, 2));
-      setStateMessage('Something went wrong')
-      setState(2)
-      setTimeout(() => {
-        setMessage("")
-        setState(4)
-      }, 2000);
-    }
+    console.log(campType);
+    
+    // setState(0)
+    // try {
+    //   const formData = new FormData();
+    //   const data = {
+    //     "user": user.id,
+    //     "title": title,
+    //     "sheduled_at": new Date().toUTCString(),
+    //     "status": "Not Started",
+    //     "attactment_type": campType,
+    //     "selected_contact": user.contacts.length,
+    //     "succefull_contact": 0,
+    //     "failed_contact": 0,
+    //     "to": JSON.stringify([]),
+    //     "text": message
+    //   };
+    //   for (const ele in data) {
+    //     console.debug(ele, data[ele]);
+    //     formData.append(ele, data[ele] as string | Blob);
+    //   }
+    //   if (campType === "image" || campType === "video") {
+    //     formData.append('attachment', file);
+    //   }
+    //   const record = await pb.collection('campaign').create(data);
+    //   user.campaign = [...user.campaign, record.id];
+    // await pb.collection("users").update(user.id,user)
+    //   console.debug(record.id)
+    //   const req = await fetch(`https://disgusting-trouble-production.up.railway.app/start?id=${record.id}&type=${campType}`)
+    //   const res = await req.text();
+    //   console.log(JSON.stringify(res, null, 2));
+    //   console.log(req.status);
+    //   setStateMessage(req.status == 200 ? "Campaign started" : "Failed to start campaign.")
+    //   setState(req.status == 200 ? 1 : 2)
+    //   setTimeout(() => {
+    //     setMessage("")
+    //     setState(4)
+    //   }, 2000);
+    // } catch (error) {
+    //   console.error(JSON.stringify(error, null, 2));
+    //   setStateMessage('Something went wrong')
+    //   setState(2)
+    //   setTimeout(() => {
+    //     setMessage("")
+    //     setState(4)
+    //   }, 2000);
+    // }
   }
 
   return (
