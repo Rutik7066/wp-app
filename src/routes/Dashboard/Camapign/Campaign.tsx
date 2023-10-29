@@ -25,11 +25,7 @@ const Campaign = () => {
 
   const [file, setFile] = useState<File>(); // To upload
 
-
   const [campType, setcampType] = useState('text'); // New state variable for file type
-
-
-
 
   const [state, setState] = useState(4);
 
@@ -44,7 +40,7 @@ const Campaign = () => {
       const imageUrl = `https://robo.itraindia.org/server/images/${src}`;
       name = searchParams.get("src").split("?")[0];
       setFilePreview(imageUrl)
-      fetch(imageUrl)
+      fetch(`${import.meta.env.VITE_JOB}/getImageBlob?src=${src}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -56,6 +52,7 @@ const Campaign = () => {
             const file = new File([blob], name, { type: blob.type });
             // You can now use 'file' as a File object
             console.log('File created:', file);
+            setFile(file);
         })
         .catch(error => {
             console.error('Error fetching image:', error);
