@@ -23,7 +23,7 @@ const Campaign = () => {
 
   const [FileSrc, setFileSrc] = useState('');
   const [campType, setcampType] = useState('text'); // New state variable for file type
-  let file:File; 
+
 
 
 
@@ -67,11 +67,11 @@ const Campaign = () => {
           (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png' || selectedFile.type === 'video/mp4') &&
           selectedFile.size <= 5 * 1024 * 1024
         ) {
-          file = selectedFile;
-          setcampType(selectedFile.type.split("/")[0]); // Set the file type
+       
           const reader = new FileReader();
           reader.onload = (event) => {
             setFileSrc(event.target.result as string);
+            setcampType(selectedFile.type.split("/")[0]); // Set the file type
           };
           reader.readAsDataURL(selectedFile);
         } else {
