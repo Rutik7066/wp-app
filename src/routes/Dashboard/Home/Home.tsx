@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <>
       <Stat />
-      {data.expand.campaign ??
+      {data.expand != undefined ??
         <div className="flex flex-col w-full p-2 ">
           <div className="flex justify-between  items-center">
             <h1 className="text-white/80 font-bold text-lg mx-2">चालू जाहिरात</h1>
