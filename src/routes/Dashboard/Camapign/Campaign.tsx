@@ -79,51 +79,51 @@ const Campaign = () => {
   const handleSubmit = async () => {
     console.log(campType);
     
-    // setState(0)
-    // try {
-    //   const formData = new FormData();
-    //   const data = {
-    //     "user": user.id,
-    //     "title": title,
-    //     "sheduled_at": new Date().toUTCString(),
-    //     "status": "Not Started",
-    //     "attactment_type": campType,
-    //     "selected_contact": user.contacts.length,
-    //     "succefull_contact": 0,
-    //     "failed_contact": 0,
-    //     "to": JSON.stringify([]),
-    //     "text": message
-    //   };
-    //   for (const ele in data) {
-    //     console.debug(ele, data[ele]);
-    //     formData.append(ele, data[ele] as string | Blob);
-    //   }
-    //   if (campType === "image" || campType === "video") {
-    //     formData.append('attachment', file);
-    //   }
-    //   const record = await pb.collection('campaign').create(data);
-    //   user.campaign = [...user.campaign, record.id];
-    // await pb.collection("users").update(user.id,user)
-    //   console.debug(record.id)
-    //   const req = await fetch(`https://disgusting-trouble-production.up.railway.app/start?id=${record.id}&type=${campType}`)
-    //   const res = await req.text();
-    //   console.log(JSON.stringify(res, null, 2));
-    //   console.log(req.status);
-    //   setStateMessage(req.status == 200 ? "Campaign started" : "Failed to start campaign.")
-    //   setState(req.status == 200 ? 1 : 2)
-    //   setTimeout(() => {
-    //     setMessage("")
-    //     setState(4)
-    //   }, 2000);
-    // } catch (error) {
-    //   console.error(JSON.stringify(error, null, 2));
-    //   setStateMessage('Something went wrong')
-    //   setState(2)
-    //   setTimeout(() => {
-    //     setMessage("")
-    //     setState(4)
-    //   }, 2000);
-    // }
+    setState(0)
+    try {
+      const formData = new FormData();
+      const data = {
+        "user": user.id,
+        "title": title,
+        "sheduled_at": new Date().toUTCString(),
+        "status": "Not Started",
+        "attactment_type": campType,
+        "selected_contact": user.contacts.length,
+        "succefull_contact": 0,
+        "failed_contact": 0,
+        "to": JSON.stringify([]),
+        "text": message
+      };
+      for (const ele in data) {
+        console.debug(ele, data[ele]);
+        formData.append(ele, data[ele] as string | Blob);
+      }
+      if (campType === "image" || campType === "video") {
+        formData.append('attachment', file);
+      }
+      const record = await pb.collection('campaign').create(data);
+      user.campaign = [...user.campaign, record.id];
+    await pb.collection("users").update(user.id,user)
+      console.debug(record.id)
+      const req = await fetch(`https://disgusting-trouble-production.up.railway.app/start?id=${record.id}&type=${campType}`)
+      const res = await req.text();
+      console.log(JSON.stringify(res, null, 2));
+      console.log(req.status);
+      setStateMessage(req.status == 200 ? "Campaign started" : "Failed to start campaign.")
+      setState(req.status == 200 ? 1 : 2)
+      setTimeout(() => {
+        setMessage("")
+        setState(4)
+      }, 2000);
+    } catch (error) {
+      console.error(JSON.stringify(error, null, 2));
+      setStateMessage('Something went wrong')
+      setState(2)
+      setTimeout(() => {
+        setMessage("")
+        setState(4)
+      }, 2000);
+    }
   }
 
   return (
