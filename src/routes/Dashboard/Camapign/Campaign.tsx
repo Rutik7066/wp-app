@@ -49,8 +49,8 @@ const Campaign = () => {
       const selectedFile = e.target.files[0];
       if (selectedFile) {
         if (
-          (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png' || selectedFile.type === 'video/mp4') &&
-          selectedFile.size <= 5 * 1024 * 1024
+          (selectedFile.type === 'image/jpg' || selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png' || selectedFile.type === 'video/mp4') &&
+          selectedFile.size <= 25 * 1024 * 1024
         ) {
           file = selectedFile;
           setcampType(selectedFile.type.split("/")[0]); // Set the file type
@@ -61,7 +61,7 @@ const Campaign = () => {
           reader.readAsDataURL(selectedFile);
         } else {
           setState(3)
-          setStateMessage('Please select a JPG, PNG, or Video less than 5 MB.');
+          setStateMessage('Please select a JPG, PNG, or Video less than 25 MB.');
           setFileSrc(''); // Clear the image source
           setTimeout(() => {
             setMessage("")
