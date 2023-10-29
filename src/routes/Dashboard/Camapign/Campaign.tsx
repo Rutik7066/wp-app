@@ -44,6 +44,18 @@ const Campaign = () => {
       }
     }
   }, [])
+  const dataURItoBlob = (dataURI: string) => {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: mimeString });
+  };
 
 
  
@@ -99,7 +111,7 @@ const Campaign = () => {
         formData.append(ele, data[ele] as string | Blob);
       }
       if (campType === "image" || campType === "video") {
-        formData.append('attachment', file);
+        formData.append('attachment', dataURItoBlob(FileSrc));
       }
       const record = await pb.collection('campaign').create(data);
       user.campaign = [...user.campaign, record.id];
