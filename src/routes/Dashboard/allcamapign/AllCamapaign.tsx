@@ -11,7 +11,7 @@ export const AllCamapaign = () => {
   const data:any = useLoaderData();
   return (
     <ul className=" m-2  ">
-      {data.map((e, i) =>  (
+      {data.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime()).map((e, i) =>  (
         <NavLink key={i} to={`/allcampaign/${e.id}`}>
           <li  className="my-1 p-4 flex justify-between items-center text-white border-b border-secondary hover:bg-active/80 ">
             <h1 className="text-white font-bold ">{e.title}</h1>
