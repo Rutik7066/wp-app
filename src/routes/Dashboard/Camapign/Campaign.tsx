@@ -160,7 +160,7 @@ const Campaign = () => {
                 <button className="relative bg-secondary border border-active text-white p-2 rounded-md   w-full">
                   <input
                     type="file"
-                    accept=".jpg, .jpeg, .png"
+                    accept=".jpg, .jpeg, .png, .mp4"
                     className="absolute top-0 right-0 w-full h-full opacity-0"
                     onChange={handleImageChange}
                   />
