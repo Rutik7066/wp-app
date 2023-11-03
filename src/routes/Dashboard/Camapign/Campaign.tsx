@@ -71,7 +71,7 @@ const Campaign = () => {
       if (selectedFile) {
         if (
           (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png' || selectedFile.type === 'video/mp4') &&
-          selectedFile.size <= 5 * 1024 * 1024
+          selectedFile.size <= 10 * 1024 * 1024
         ) {
        
           const reader = new FileReader();
@@ -82,7 +82,7 @@ const Campaign = () => {
           reader.readAsDataURL(selectedFile);
         } else {
           setState(3)
-          setStateMessage('Please select a JPG, PNG, or Video less than 5 MB.');
+          setStateMessage('कृपया 10 MB पेक्षा कमी JPG, PNG किंवा MP4 निवडा.');
           setFilePreview(''); // Clear the image source
           setTimeout(() => {
             setMessage("")
@@ -176,7 +176,7 @@ const Campaign = () => {
           <div className="relative flex flex-col justify-center items-center w-full h-32 rounded-md bg-active/5  outline-2   outline-dotted outline-active ">
             <input
               type="file"
-              accept=".jpg, .jpeg, .png"
+              accept=".jpg, .jpeg, .png .mp4"
               className="absolute top-0 right-0 w-full h-full opacity-0"
               onChange={handleImageChange}
             />
