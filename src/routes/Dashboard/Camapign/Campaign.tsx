@@ -176,7 +176,7 @@ const Campaign = () => {
           <div className="relative flex flex-col justify-center items-center w-full h-32 rounded-md bg-active/5  outline-2   outline-dotted outline-active ">
             <input
               type="file"
-              accept=".jpg, .jpeg, .png .mp4"
+              accept=".mp4, .jpg, .jpeg, .png"
               className="absolute top-0 right-0 w-full h-full opacity-0"
               onChange={handleImageChange}
             />
