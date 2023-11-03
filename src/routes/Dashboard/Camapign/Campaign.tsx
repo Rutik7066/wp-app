@@ -93,7 +93,7 @@ const Campaign = () => {
       }
     }
   }
-
+  
   const handleSubmit = async () => {
     console.log(campType);
     
